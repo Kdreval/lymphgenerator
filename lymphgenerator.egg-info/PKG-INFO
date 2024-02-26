@@ -1,0 +1,11 @@
+Metadata-Version: 2.1
+Name: lymphgenerator
+Version: 0.3.2
+Summary: Functions for running LymphGenerator
+Home-page: www.github.com/morinlab/
+Author: KD
+Author-email: kdreval@sfu.ca
+License: MIT
+Requires-Dist: polars
+Requires-Dist: SigProfilerAssignment
+Requires-Dist: seaborn
