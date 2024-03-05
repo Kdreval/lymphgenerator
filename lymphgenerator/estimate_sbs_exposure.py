@@ -67,7 +67,8 @@ from SigProfilerAssignment import Analyzer as Analyze
 def run_sigprofiler(
         incoming_data = str,
         out_path = str,
-        genome_build = "GRCh37"
+        genome_build = "GRCh37",
+        export_probabilities_per_mutation = True
 ):
     print('Running SigProfiler ...')
     Analyze.cosmic_fit(
@@ -76,7 +77,9 @@ def run_sigprofiler(
         input_type = "vcf",
         context_type = "96",
         genome_build = genome_build,
-        cosmic_version = 3.4)
+        cosmic_version = 3.4,
+        export_probabilities_per_mutation = export_probabilities_per_mutation
+    )
     return()
 
 # Normalize signature exposure to be relative/sample
@@ -150,6 +153,7 @@ def estimate_sbs_exposure(
         clear_temp_outputs = True,
         subset_to_panel = False,
         panel = None,
+        export_probabilities_per_mutation = True,
         **mafs
 ):
     preprocess = prepare_sbs_mafs(
@@ -161,7 +165,8 @@ def estimate_sbs_exposure(
     estimate = run_sigprofiler(
         incoming_data = out_path,
         out_path = out_path,
-        genome_build = genome_build
+        genome_build = genome_build,
+        export_probabilities_per_mutation = export_probabilities_per_mutation
     )
     input_file = sorted(pathlib.Path(out_path).glob('**/*_Activities.txt'))
     activities = scale_sbs_exposure(
