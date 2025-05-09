@@ -196,3 +196,21 @@ colors = {
     'pathology': {item[0]: item[1] for item in pathology_colors_list},
     'lymphgen': {item[0]: item[1] for item in lymphgen_colors_list}
 }
+
+maf_header = [
+    "Hugo_Symbol", "Entrez_Gene_Id", "Center", "NCBI_Build",
+    "Chromosome", "Start_Position", "End_Position", "Strand",
+    "Variant_Classification", "Variant_Type", "Reference_Allele",
+    "Tumor_Seq_Allele1", "Tumor_Seq_Allele2", "dbSNP_RS",
+    "dbSNP_Val_Status", "Tumor_Sample_Barcode",
+    "Matched_Norm_Sample_Barcode", "Match_Norm_Seq_Allele1",
+    "Match_Norm_Seq_Allele2", "Tumor_Validation_Allele1",
+    "Tumor_Validation_Allele2", "Match_Norm_Validation_Allele1",
+    "Match_Norm_Validation_Allele2", "Verification_Status",
+    "Validation_Status", "Mutation_Status", "Sequencing_Phase",
+    "Sequence_Source", "Validation_Method", "Score", "BAM_File",
+    "Sequencer", "Tumor_Sample_UUID", "Matched_Norm_Sample_UUID",
+    "HGVSc", "HGVSp", "HGVSp_Short", "Transcript_ID",
+    "Exon_Number", "t_depth", "t_ref_count", "t_alt_count",
+    "n_depth", "n_ref_count", "n_alt_count"
+]
