@@ -236,7 +236,7 @@ def plot_and_whisker(
             plt.text((x1 + x2) * 0.5, text_height, sig_symbol, ha='center', va='bottom', c='k')
         
         if len(xticklabels) > 4:
-            ax.xticks(rotation = 90)
+            ax.tick_params(axis='x', rotation=90)
         plt.show()
 
     if print_stats_table:
@@ -303,5 +303,7 @@ def plot_stacked(
             loc = 'left',
             fontweight = 'bold'
         )
+    if len(small_maf[comparison_column].unique()) > 4:
+        ax.tick_params(axis='x', rotation=90)
     sns.despine(trim=True)
     plt.show()
