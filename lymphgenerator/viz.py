@@ -269,6 +269,7 @@ def plot_stacked(
         data,
         sample_id,
         custom_colours,
+        bbox_to_anchor = (-0.1, -0.5),
         sample_column='Tumor_Sample_Barcode',
         comparison_column='method',
         response_column='exposure',
@@ -292,7 +293,7 @@ def plot_stacked(
     sns.move_legend(
         ax,
         "lower left",
-        bbox_to_anchor=(-0.1, -0.5),
+        bbox_to_anchor=bbox_to_anchor,
         ncol=5,
         title=None,
         frameon=False
