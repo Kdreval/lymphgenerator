@@ -15,7 +15,11 @@ def plot_and_whisker(
         print_stats_table = True,
         facet = False,
         facet_on = None,
-        figsize = (7, 6)
+        figsize = (7, 6),
+        rotate_x_labels = False,
+        fontsize = 10,
+        col_spacing = 0.5,
+        padding = 15
     ):
     """
     Create a violin-and-whisker plot with significance bars.
@@ -36,6 +40,7 @@ def plot_and_whisker(
         combinations = [
             (ls[x], ls[x + y]) for y in reversed(ls) for x in range((len(ls) - y))
         ]
+        max_value = float('-inf')
         for combination in combinations:
             data1 = data.filter(
                 pl.col(comparison_column) == df_list[combination[0] - 1]
@@ -43,14 +48,16 @@ def plot_and_whisker(
             data2 = data.filter(
                 pl.col(comparison_column) == df_list[combination[1] - 1]
             ).to_series()
+            combined_max = pl.concat([data1, data2]).max()
+            if combined_max > max_value:
+                max_value = combined_max
             # Significance
             U, p = stats.mannwhitneyu(data1, data2, alternative='two-sided')
             if p < 0.05:
                 significant_combinations.append([combination, p])
-
         # Add significance labels
         # Get the y-axis limits
-        bottom, top = 0, 1.1
+        bottom, top = 0, max_value*1.2
         y_range = top - bottom
 
         # Significance bars
@@ -82,7 +89,8 @@ def plot_and_whisker(
                 sig_symbol,
                 ha='center',
                 va='bottom',
-                c='k'
+                c='k',
+                fontsize=fontsize*0.9
             )
 
 
@@ -123,7 +131,11 @@ def plot_and_whisker(
             )
 
         # Generate plot
-        ax = sns.FacetGrid(data.to_pandas(), col=facet_on, margin_titles=True)
+        ax = sns.FacetGrid(
+            data.to_pandas(),
+            col=facet_on,
+            margin_titles=True
+        )
         ax.set_titles(col_template="{col_name}")
         ax.map_dataframe(
             sns.violinplot,
@@ -151,9 +163,12 @@ def plot_and_whisker(
         sns.despine(trim = True)
         ax.set_axis_labels("")
         ax.map_dataframe(_annotate)
-        if len(xticklabels) > 4:
+        if rotate_x_labels:
             ax.set_xticklabels(rotation = 90)
         ax.fig.set_size_inches(*figsize)
+        for a in ax.axes.flat:
+            a.set_title(a.get_title(), fontsize=fontsize, pad = padding)
+        ax.figure.subplots_adjust(hspace=col_spacing, wspace=col_spacing)
         plt.show()
 
     else:
@@ -236,9 +251,17 @@ def plot_and_whisker(
             elif p < 0.05:
                 sig_symbol = '*'
             text_height = bar_height + (y_range * 0.01)
-            plt.text((x1 + x2) * 0.5, text_height, sig_symbol, ha='center', va='bottom', c='k')
+            plt.text(
+                (x1 + x2) * 0.5,
+                text_height,
+                sig_symbol,
+                ha='center',
+                va='bottom',
+                c='k',
+                fontsize=fontsize*0.9
+            )
         
-        if len(xticklabels) > 4:
+        if rotate_x_labels:
             ax.tick_params(axis='x', rotation=90)
         plt.show()
 
