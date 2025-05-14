@@ -14,7 +14,8 @@ def plot_and_whisker(
         subsetting_value = None,
         print_stats_table = True,
         facet = False,
-        facet_on = None
+        facet_on = None,
+        figsize = (7, 6)
     ):
     """
     Create a violin-and-whisker plot with significance bars.
@@ -123,6 +124,7 @@ def plot_and_whisker(
 
         # Generate plot
         ax = sns.FacetGrid(data.to_pandas(), col=facet_on, margin_titles=True)
+        ax.set_titles(col_template="{col_name}")
         ax.map_dataframe(
             sns.violinplot,
             x = comparison_column,
@@ -151,6 +153,7 @@ def plot_and_whisker(
         ax.map_dataframe(_annotate)
         if len(xticklabels) > 4:
             ax.set_xticklabels(rotation = 90)
+        ax.fig.set_size_inches(*figsize)
         plt.show()
 
     else:
@@ -178,7 +181,7 @@ def plot_and_whisker(
                 significant_combinations.append([combination, p])
 
         # Generate plot
-        f, ax = plt.subplots(figsize = (7, 6))
+        f, ax = plt.subplots(figsize = figsize)
         sns.violinplot(
             data.to_pandas(),
             x = comparison_column,
